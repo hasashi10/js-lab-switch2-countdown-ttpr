@@ -21,7 +21,7 @@
    The second argument is the id of the element that
    will display the timer.
 ------------------------------------------------------ */
-CountDownToMario('06/05/2025 12:01 AM', 'countdown');
+
 
 /**
  *  Builds a self-updating countdown.
@@ -30,6 +30,7 @@ CountDownToMario('06/05/2025 12:01 AM', 'countdown');
  */
 function CountDownToMario(endTime, divId) {
   /* STEP 1: Convert deadline into a Date object. */
+  const div = document.getElementById(divId);
   const end = new Date(endTime);
 
   /* 👉 Time constants (leave these as-is): */
@@ -39,7 +40,8 @@ function CountDownToMario(endTime, divId) {
   const _day    = _hour * 24;
 
   /* STEP 2: Declare any variables you’ll need here
-            (e.g. interval id). */
+  (e.g. interval id). */
+    let timer;
 
   /* STEP 3: Write an inner `showRemaining()` function:
        • get current time (`new Date()`)
@@ -49,14 +51,34 @@ function CountDownToMario(endTime, divId) {
        • pad units to two digits (see hints below)
        • update `document.getElementById(divId).textContent`
   */
+    let showRemaining = function() {
+        const now = new Date();
+        const distance = end - now;
 
-  /* STEP 4: Call `showRemaining()` once so the timer
-            appears immediately. */
+        if (distance <= 0) {
+            //clearInterval(timer);
+            let timer = document.getElementById(divId).
+            timer.textcontent =" switch 2 has dropped!";
+            return;
+        }
+        const days    = Math.floor(distance / _day);
+        const hours   = Math.floor((distance % _day) / _hour);
+        const minutes = Math.floor((distance % _hour) / _minute);
+        const seconds = Math.floor((distance % _minute) / _second);
+        
+        const pad = (n) => n.toString().padStart(2, '0');
 
-  /* STEP 5: Repeat `showRemaining()` every second
-            with `setInterval`. */
+        document.getElementById(divId).textContent = 
+            `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`  
+    }
+    /* STEP 4: Call `showRemaining()` once so the timer
+                appears immediately. */
+    showRemaining();
+    timer = setInterval(showRemaining, 1000);
+    /* STEP 5: Repeat `showRemaining()` every second
+                with `setInterval`. */
 }
-
+CountDownToMario('06/05/2025 12:01 AM', 'countdown');
 /* ======================================================
    📌  HINTS  — uncomment / tweak as you implement
    ------------------------------------------------------
@@ -76,4 +98,4 @@ function CountDownToMario(endTime, divId) {
 /* ======================================================
    🎉  BONUS  — optional extras
    ------------------------------------------------------
-   • Add a confetti explosion (see confetti.js) - Check js in 
+   • Add a confetti explosion (see confetti.js) - Check js in*/ 
